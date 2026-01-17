@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "AI导航索引",
+  "version": "0.1",
+  "description": "定位插件",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ]
+}
