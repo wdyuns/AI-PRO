@@ -1,16 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "AI导航索引",
-  "version": "0.1",
-  "description": "定位插件",
+  "name": "AI 导航索引",
+  "version": "0.4",
+  "description": "一个简洁、高效、可定制的 AI 对话侧边栏。支持长对话快速索引、关键词检索、文本复制、公式复制与常用提示词管理。告别无尽滚动，让每一次对话都清晰可见，确保你永远不会丢失灵感的碎片。",
+  "permissions": [
+    "activeTab",
+    "clipboardWrite"
+  ],
   "content_scripts": [
     {
       "matches": [
-        "https://chatgpt.com/*",
-        "https://gemini.google.com/*"
+        "https://gemini.google.com/*",
+        "https://chatgpt.com/*"
       ],
-      "js": ["content.js"],
-      "css": ["style.css"]
+      "css": [
+        "style.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
     }
   ]
 }
