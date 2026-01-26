@@ -1,3 +1,6 @@
+
+// === 🛡️ 插件1 JS (Scope Isolated) ===
+(() => {
 /* --- content.js v0.4 (Final Fix: Boundary Safety & Scope) --- */
 
 let searchTerm = "";
@@ -140,6 +143,17 @@ function initOrUpdate() {
                     <div style="height:1px; background:#eef2f8; margin-bottom:16px;"></div>
                     <div class="setting-row" style="margin-bottom:10px;"><span>文字颜色</span><input type="color" id="set-font-color" value="${config.fontColor}"></div>
                     <div class="setting-row" style="margin-bottom:10px;"><span>背景色调</span><input type="color" id="set-bg-color" value="${config.bgColor}"></div>
+                    
+                    <div style="display:flex; gap:10px; margin-top:10px; margin-bottom:6px;">
+                        <a href="https://pan.baidu.com/s/5wQ66hvD_pwyTq6v5_hXASQ" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; padding:8px 0; border:1px solid #eef2f8; border-radius:6px; color:#718096; font-size:12px; font-weight:600; text-decoration:none; background:#ffffff; transition:all 0.2s;" onmouseover="this.style.color='#4c8bf5';this.style.borderColor='#4c8bf5'" onmouseout="this.style.color='#718096';this.style.borderColor='#eef2f8'">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            百度网盘
+                        </a>
+                        <a href="https://github.com/wdyuns/AI-PRO" target="_blank" style="flex:1; display:flex; align-items:center; justify-content:center; padding:8px 0; border:1px solid #eef2f8; border-radius:6px; color:#718096; font-size:12px; font-weight:600; text-decoration:none; background:#ffffff; transition:all 0.2s;" onmouseover="this.style.color='#2d3748';this.style.borderColor='#2d3748'" onmouseout="this.style.color='#718096';this.style.borderColor='#eef2f8'">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 15.13V19"></path></svg>
+                            GitHub
+                        </a>
+                    </div>
                     <button id="reset-all-btn" class="reset-btn" style="margin-top:6px; margin-bottom:16px; padding:8px 0; border-style:dashed; background:transparent;">恢复默认设置</button>
                     <div class="setting-title" style="border-top:1px solid #eef2f8; padding-top:16px; margin-top:4px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:13px; letter-spacing:1px; color:#718096; font-weight:600;"><span>自定义标签管理</span><div style="display:flex; gap:8px;"><button id="bulk-delete-tags" style="display:none; background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; font-weight:700;">删除选中</button><span id="clear-tags-btn" class="tag-clear-link">清空</span></div></div>
                 </div>
@@ -270,14 +284,11 @@ const run = () => { initOrUpdate(); };
 if (document.readyState === 'complete') setTimeout(run, 1500); else window.addEventListener('load', () => setTimeout(run, 1500));
 let db; const ob = new MutationObserver(() => { clearTimeout(db); db = setTimeout(renderList, 600); });
 ob.observe(document.body, { childList: true, subtree: true });
-;
-// ================= END OF PLUGIN 1 =================
+})();
 
 
-/* ==========================================================================
-   MERGED SEPARATOR: The code below comes from Plugin 2 (content.js)
-   ========================================================================== */
-
+// === 🛡️ 插件2 JS (Scope Isolated) ===
+(() => {
 (function () {
   "use strict";
 
@@ -292,32 +303,31 @@ ob.observe(document.body, { childList: true, subtree: true });
       .agent-turn,
       div[class*='markdown']
     `,
-    toastDuration: 2000, 
     minTextLength: 2,
     animDuration: 500 
   };
-
-  const HIDDEN_HISTORY = [];
 
   const ICONS = {
     copy: `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
     delete: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
     undo: `<svg viewBox="0 0 24 24"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>`,
     sectionCopy: `<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>`,
-    image: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`
+    image: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`,
+    mark: `<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`,
+    jump: `<svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>`,
+    jumpDown: `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>`,
+    toBottom: `<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline><line x1="5" y1="21" x2="19" y2="21"></line></svg>`,
+    square: `<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" ry="2"></rect></svg>`
   };
 
-  // ================== 核心工具：公式处理 ==================
+  const HIDDEN_HISTORY = [];
+
+  // ================== 基础工具 ==================
   function extractLatexFromElement(mathEl) {
-    if (!mathEl) return null; // 安全检查
     const mjxContainer = mathEl.closest("mjx-container") || mathEl;
-    if (mjxContainer.tagName === "MJX-CONTAINER" && mjxContainer.hasAttribute("data-tex")) {
-        return mjxContainer.getAttribute("data-tex");
-    }
+    if (mjxContainer.tagName === "MJX-CONTAINER" && mjxContainer.hasAttribute("data-tex")) return mjxContainer.getAttribute("data-tex");
     const dataTarget = mathEl.closest("[data-math], [data-math-src]") || mathEl;
-    if (dataTarget.hasAttribute("data-math") || dataTarget.hasAttribute("data-math-src")) {
-        return (dataTarget.getAttribute("data-math") || dataTarget.getAttribute("data-math-src"))?.trim();
-    }
+    if (dataTarget.hasAttribute("data-math") || dataTarget.hasAttribute("data-math-src")) return (dataTarget.getAttribute("data-math") || dataTarget.getAttribute("data-math-src"))?.trim();
     const annotation = mathEl.querySelector("annotation[encoding='application/x-tex']");
     if (annotation) return annotation.textContent.trim();
     const annotationXml = mathEl.querySelector("annotation-xml[encoding='application/x-tex']");
@@ -357,9 +367,8 @@ ob.observe(document.body, { childList: true, subtree: true });
     });
 
     let text = "";
-    if (element.tagName === "PRE") {
-      text = clone.textContent; 
-    } else {
+    if (element.tagName === "PRE") text = clone.textContent; 
+    else {
       text = clone.innerText;
       text = text.replace(/^[ \t]+|[ \t]+$/gm, "");
       text = text.replace(/[ \t]{2,}/g, " ");
@@ -368,78 +377,44 @@ ob.observe(document.body, { childList: true, subtree: true });
     return standardizePunctuation(text.trim());
   }
 
-  // ================== 图片复制逻辑 (已修复：防闪烁/跨域) ==================
+  // ================== 复制/图片 ==================
   async function executeImageCopy(imgEl) {
     try {
       showToast("正在处理图片...");
-      
-      // 创建一个新的 Image 对象，不影响 DOM 中的原图
-      const proxyImg = new Image();
-      proxyImg.crossOrigin = "anonymous";
-      
-      await new Promise((resolve, reject) => {
-          proxyImg.onload = resolve;
-          proxyImg.onerror = reject;
-          proxyImg.src = imgEl.src;
-      });
-
       const canvas = document.createElement("canvas");
-      canvas.width = proxyImg.naturalWidth;
-      canvas.height = proxyImg.naturalHeight;
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(proxyImg, 0, 0);
+      imgEl.crossOrigin = "anonymous";
+      ctx.drawImage(imgEl, 0, 0);
 
       canvas.toBlob(async (blob) => {
-        if (!blob) {
-            showToast("图片格式不受支持", "error");
-            return;
-        }
-        try {
-            const item = new ClipboardItem({ "image/png": blob });
-            await navigator.clipboard.write([item]);
-            
-            // 视觉反馈
-            imgEl.parentElement.classList.remove("copy-pulse-success");
-            void imgEl.parentElement.offsetWidth;
-            imgEl.parentElement.classList.add("copy-pulse-success");
-            setTimeout(() => imgEl.parentElement.classList.remove("copy-pulse-success"), CONFIG.animDuration);
-            
-            showToast("图片已复制到剪贴板");
-        } catch (err) {
-            throw new Error("Clipboard write failed");
-        }
+        if (!blob) { showToast("图片格式不受支持", "error"); return; }
+        const item = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([item]);
+        imgEl.parentElement.classList.remove("copy-pulse-success");
+        void imgEl.parentElement.offsetWidth;
+        imgEl.parentElement.classList.add("copy-pulse-success");
+        setTimeout(() => imgEl.parentElement.classList.remove("copy-pulse-success"), CONFIG.animDuration);
+        showToast("图片已复制到剪贴板");
       }, "image/png");
 
     } catch (err) {
-      console.error("Image copy failed:", err);
-      // 降级尝试：直接复制 URL
+      console.error(err);
       try {
           await navigator.clipboard.writeText(imgEl.src);
           showToast("无法复制图像数据，已复制图片链接");
-      } catch (e) {
-          showToast("复制失败", "error");
-      }
+      } catch (e) { showToast("复制失败", "error"); }
     }
   }
 
-  // ================== 文本/公式 复制执行 ==================
   async function executeCopy(text, targetEl, successMsg) {
     if (!text) return;
     try {
-      const htmlContent = `
-        <div style="
-          font-family: 'Times New Roman', 'SimSun', '宋体', serif; 
-          font-size: 14pt; 
-          line-height: 1.5; 
-          color: #000000;
-        ">
-          ${text.replace(/\n/g, "<br>")}
-        </div>
-      `;
+      const htmlContent = `<div style="font-family: 'Times New Roman', 'SimSun', serif; font-size: 14pt; line-height: 1.5;">${text.replace(/\n/g, "<br>")}</div>`;
       const textBlob = new Blob([text], { type: "text/plain" });
       const htmlBlob = new Blob([htmlContent], { type: "text/html" });
-      const clipboardItem = new ClipboardItem({ "text/plain": textBlob, "text/html": htmlBlob });
-      await navigator.clipboard.write([clipboardItem]);
+      await navigator.clipboard.write([new ClipboardItem({ "text/plain": textBlob, "text/html": htmlBlob })]);
 
       if (targetEl) {
         targetEl.classList.remove("copy-pulse-success");
@@ -449,9 +424,8 @@ ob.observe(document.body, { childList: true, subtree: true });
       }
       showToast(successMsg);
     } catch (err) {
-      // 降级：仅复制纯文本
       await navigator.clipboard.writeText(text);
-      showToast(successMsg + " (仅文本)");
+      showToast(successMsg);
     }
   }
 
@@ -486,8 +460,7 @@ ob.observe(document.body, { childList: true, subtree: true });
       container.className = "ai-toast-container";
       document.body.appendChild(container);
     }
-    // 修复：不要清空 innerHTML，允许 Toast 堆叠
-    
+    container.innerHTML = ''; 
     const toast = document.createElement("div");
     toast.className = "ai-toast";
     const msgSpan = document.createElement("span");
@@ -501,18 +474,296 @@ ob.observe(document.body, { childList: true, subtree: true });
       toast.appendChild(btn);
     }
     container.appendChild(toast);
-    
-    // 自动移除
     setTimeout(() => {
       if (toast && toast.parentNode) {
         toast.style.opacity = "0"; 
         toast.style.transform = "translateY(10px)";
         setTimeout(() => toast.remove(), 300);
       }
-    }, CONFIG.toastDuration);
+    }, 2000);
   }
 
-  // ================== 功能逻辑 ==================
+  // ================== 多点标记核心逻辑 ==================
+  const MAX_MARKS = 3;
+  let markedElements = []; 
+  const MARK_COLORS = ['jump-blue', 'jump-red', 'jump-green'];
+
+  function getBlockSignature(el) {
+      return el.textContent.trim().substring(0, 100).replace(/\s+/g, '');
+  }
+
+  function saveMarksToStorage() {
+      try {
+          const key = `ai_marks_${window.location.pathname}`;
+          const data = markedElements
+              .filter(m => m.element && m.element.isConnected)
+              .map(m => ({
+                  sig: getBlockSignature(m.element),
+                  color: m.colorClass
+              }));
+          localStorage.setItem(key, JSON.stringify(data));
+      } catch(e) {}
+  }
+
+  // 1. 强力滚动到底部
+  function triggerScrollToBottom() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    const candidates = Array.from(document.querySelectorAll('*')).filter(el => 
+        el.scrollHeight > el.clientHeight && el.clientHeight > 100
+    );
+    let scrollTarget = null;
+    let maxScroll = 0;
+    candidates.forEach(el => {
+        const style = window.getComputedStyle(el);
+        if (['scroll', 'auto'].includes(style.overflowY)) {
+             if (el.scrollHeight > maxScroll) {
+                 maxScroll = el.scrollHeight;
+                 scrollTarget = el;
+             }
+        }
+    });
+    if (scrollTarget) scrollTarget.scrollTo({ top: scrollTarget.scrollHeight, behavior: 'smooth' });
+  }
+
+  // 2. 确保黑色按钮常驻
+  function ensureBottomButton(container) {
+    if (!container) return;
+    let bottomBtn = document.getElementById("jump-btn-bottom");
+    if (!bottomBtn) {
+        bottomBtn = document.createElement("div");
+        bottomBtn.id = "jump-btn-bottom";
+        bottomBtn.className = "ai-jump-fab jump-black visible"; 
+        bottomBtn.innerHTML = ICONS.toBottom;
+        bottomBtn.title = "一键到底部";
+        bottomBtn.onclick = triggerScrollToBottom;
+        container.appendChild(bottomBtn); 
+    } else if (!container.contains(bottomBtn)) {
+        container.appendChild(bottomBtn);
+    }
+  }
+
+  function getJumpContainer() {
+    let container = document.querySelector(".ai-jump-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "ai-jump-container";
+      document.body.appendChild(container);
+      autoPositionJumpButtons();
+    }
+    ensureBottomButton(container);
+    return container;
+  }
+
+  function autoPositionJumpButtons() {
+    const container = document.querySelector(".ai-jump-container");
+    if (!container) return;
+
+    let target = null;
+    const candidates = document.body.querySelectorAll("button, a, h1, span[role='heading']");
+    for (let el of candidates) {
+        if (el.offsetParent === null) continue;
+        const text = el.textContent.trim();
+        if (text === "Gemini" || text === "Gemini Advanced") {
+             const rect = el.getBoundingClientRect();
+             if (rect.left < window.innerWidth / 2) {
+                 target = el;
+                 break;
+             }
+        }
+    }
+
+    if (target) {
+        const rect = target.getBoundingClientRect();
+        const safeTop = Math.max(rect.bottom + 12, 80);
+        container.style.left = `${rect.left}px`;
+        container.style.top = `${safeTop}px`;
+    } else {
+        if (!container.style.left) {
+             container.style.left = "20px";
+             container.style.top = "80px";
+        }
+    }
+  }
+
+  // 3. 实时状态更新 (核心逻辑)
+  function updateAllButtonsState() {
+     const container = getJumpContainer();
+
+     markedElements.forEach((m, index) => {
+         if (!m.element.isConnected) return;
+
+         const rect = m.element.getBoundingClientRect();
+         const vh = window.innerHeight;
+         // 判断是否在视口内 (留一点余量)
+         const inViewport = (rect.bottom > 0 && rect.top < vh);
+
+         let btn = document.getElementById(`jump-btn-${m.id}`);
+
+         let iconHtml, titleText, currentDir;
+
+         if (inViewport) {
+             // 方形 (已到达)
+             iconHtml = ICONS.square;
+             titleText = "已到达标记处";
+             currentDir = 'reached';
+         } else {
+             // 箭头
+             const isAbove = rect.top < 0; 
+             iconHtml = isAbove ? ICONS.jump : ICONS.jumpDown;
+             titleText = isAbove ? "内容在上方 (点击跳转)" : "内容在下方 (点击跳转)";
+             currentDir = isAbove ? 'up' : 'down';
+         }
+
+         if (!btn) {
+             btn = document.createElement("div");
+             btn.id = `jump-btn-${m.id}`;
+             btn.className = `ai-jump-fab ${m.colorClass}`;
+
+             // ★ 修改：点击跳转逻辑 - 修复代码块跳转位置
+             btn.onclick = () => {
+                 // 如果是代码块，跳转到顶部；否则跳到中间
+                 const isCode = m.element.tagName === 'PRE';
+                 m.element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: isCode ? 'start' : 'center' 
+                 });
+
+                 m.element.classList.remove("copy-pulse-success");
+                 void m.element.offsetWidth;
+                 m.element.classList.add("copy-pulse-success");
+                 setTimeout(() => m.element.classList.remove("copy-pulse-success"), 1000);
+             };
+
+             container.appendChild(btn);
+             requestAnimationFrame(() => btn.classList.add("visible"));
+         }
+
+         // 状态改变时更新图标
+         if (btn.dataset.dir !== currentDir) {
+             btn.innerHTML = iconHtml;
+             btn.title = titleText;
+             btn.dataset.dir = currentDir;
+         }
+     });
+
+     const validMarks = markedElements.filter(m => m.element.isConnected);
+     if (validMarks.length !== markedElements.length) {
+         markedElements = validMarks;
+         saveMarksToStorage(); 
+     }
+  }
+
+  let ticking = false;
+  function onScroll() {
+      if (!ticking) {
+          window.requestAnimationFrame(() => {
+              updateAllButtonsState();
+              autoPositionJumpButtons();
+              ensureBottomButton(document.querySelector(".ai-jump-container"));
+              ticking = false;
+          });
+          ticking = true;
+      }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  setInterval(onScroll, 500); 
+
+  function removeMarkByElement(element) {
+    const sig = getBlockSignature(element);
+    const index = markedElements.findIndex(m => m.element === element || getBlockSignature(m.element) === sig);
+
+    if (index !== -1) {
+      const removed = markedElements[index];
+      if(removed.element.isConnected) {
+          removed.element.classList.remove(`${removed.colorClass}-highlight`); 
+      }
+      const btn = document.getElementById(`jump-btn-${removed.id}`);
+      if (btn) btn.remove();
+      markedElements.splice(index, 1);
+      saveMarksToStorage(); 
+      return true;
+    }
+    return false;
+  }
+
+  // 5. 核心逻辑：智能颜色补位
+  function handleMark(element, options = {}) {
+    const { isRestore = false, forceColor = null } = options;
+    const sig = getBlockSignature(element);
+    const existingIndex = markedElements.findIndex(m => getBlockSignature(m.element) === sig);
+
+    if (existingIndex !== -1) {
+        if (!isRestore) {
+            removeMarkByElement(markedElements[existingIndex].element);
+            showToast("标记已取消");
+            return;
+        } else {
+            const existingMark = markedElements[existingIndex];
+            if (existingMark.element !== element) {
+                if(existingMark.element.isConnected) existingMark.element.classList.remove(`${existingMark.colorClass}-highlight`);
+                existingMark.element = element;
+                element.classList.add(`${existingMark.colorClass}-highlight`);
+            }
+            return;
+        }
+    }
+
+    if (markedElements.length >= MAX_MARKS) {
+      const removed = markedElements.shift();
+      if(removed.element.isConnected) removed.element.classList.remove(`${removed.colorClass}-highlight`);
+      const btn = document.getElementById(`jump-btn-${removed.id}`);
+      if (btn) btn.remove();
+    }
+
+    let colorClass;
+    if (forceColor && MARK_COLORS.includes(forceColor)) {
+        colorClass = forceColor;
+    } else {
+        const usedColors = markedElements.map(m => m.colorClass);
+        colorClass = MARK_COLORS.find(c => !usedColors.includes(c));
+        if (!colorClass) colorClass = MARK_COLORS[0];
+    }
+
+    const id = Date.now() + Math.random().toString(36).substr(2, 5);
+    const markObj = { element, id, colorClass };
+    markedElements.push(markObj);
+    element.classList.add(`${colorClass}-highlight`);
+
+    if (!isRestore) {
+        showToast(`标记已添加 (${markedElements.length}/${MAX_MARKS})`, "清空", () => clearAllMarks());
+        saveMarksToStorage(); 
+    }
+    onScroll(); 
+  }
+
+  function clearAllMarks() {
+    markedElements.forEach(m => {
+        if(m.element.isConnected) m.element.classList.remove(`${m.colorClass}-highlight`);
+        const btn = document.getElementById(`jump-btn-${m.id}`);
+        if(btn) btn.remove();
+    });
+    markedElements = [];
+    saveMarksToStorage(); 
+  }
+
+  function checkAndRestoreMark(block) {
+      try {
+          const key = `ai_marks_${window.location.pathname}`;
+          const raw = localStorage.getItem(key);
+          if (!raw) return;
+          const savedData = JSON.parse(raw);
+          if (!Array.isArray(savedData)) return;
+
+          const sig = getBlockSignature(block);
+          const found = savedData.find(item => item.sig === sig);
+          if (found) {
+              handleMark(block, { isRestore: true, forceColor: found.color });
+          }
+      } catch (e) {}
+  }
+
+  // ================== 功能函数 ==================
   function hideBlock(element) {
     const originalDisplay = element.style.display;
     element.classList.add("folding-anim");
@@ -530,7 +781,7 @@ ob.observe(document.body, { childList: true, subtree: true });
     const record = HIDDEN_HISTORY.pop();
     const el = record.element;
     el.classList.remove("hidden-content");
-    el.style.display = record.originalDisplay || ''; // 防止 undefined
+    el.style.display = record.originalDisplay;
     el.style.opacity = "0"; el.style.maxHeight = "0";
     void el.offsetWidth; 
     el.style.transition = "all 0.4s ease";
@@ -586,20 +837,37 @@ ob.observe(document.body, { childList: true, subtree: true });
     const latex = extractLatexFromElement(mathEl);
     if (!latex) return;
     e.preventDefault(); e.stopPropagation();
-    let cleanLatex = latex.replace(/^\\\(|\\\)$|^\\\[|\\\]$/g, "").trim(); 
-    cleanLatex = cleanLatex.replace(/\s+/g, " ");
-    navigator.clipboard.writeText(`$${cleanLatex}$`).then(() => {
+
+    let cleanLatex = latex.replace(/^\\\(|\\\)$|^\\\[|\\\]$/g, "").trim();
+    const protectedPattern = /(?:\\begin\s*\{|\\)(cases|pmatrix|bmatrix|vmatrix|Bmatrix|matrix|array)/;
+    const isProtected = protectedPattern.test(cleanLatex);
+    const isBlock = cleanLatex.includes("\\\\") || cleanLatex.includes("\\begin");
+    let finalTex;
+
+    if (isBlock || isProtected) {
+        let fmt = cleanLatex;
+        fmt = fmt.replace(/\\begin\s*\{(aligned|equation|gather|split)\*?\}/g, "");
+        fmt = fmt.replace(/\\end\s*\{(aligned|equation|gather|split)\*?\}/g, "");
+        let lines = fmt.split("\\\\");
+        if (lines.length === 1 && fmt.includes("\n")) lines = fmt.split("\n");
+        lines = lines.map(line => line.trim()).filter(line => line.length > 0);
+        if (lines.length > 0) finalTex = `$\\begin{array}{l}\n${lines.join(" \\\\ ")}\n\\end{array}$`;
+        else finalTex = `$${fmt}$`;
+    } else {
+        finalTex = `$${cleanLatex.replace(/\s+/g, " ")}$`;
+    }
+
+    navigator.clipboard.writeText(finalTex).then(() => {
         if (mathEl) {
             mathEl.classList.remove("copy-pulse-success");
             void mathEl.offsetWidth;
             mathEl.classList.add("copy-pulse-success");
             setTimeout(() => mathEl.classList.remove("copy-pulse-success"), CONFIG.animDuration);
         }
-        showToast("LaTeX 公式已复制");
+        showToast("复制成功");
     });
   }
 
-  // ================== 注入逻辑 ==================
   function createBtn(iconHtml, title, onClick) {
     const btn = document.createElement("div");
     btn.className = "ai-icon-btn";
@@ -614,44 +882,44 @@ ob.observe(document.body, { childList: true, subtree: true });
     containers.forEach(container => {
       if (container.classList.contains("result-streaming")) return;
 
-      // 1. 文本段落注入
       const blocks = container.querySelectorAll("p, li, dd, pre, blockquote, .math-block");
       blocks.forEach(block => {
-        if (block.classList.contains("ai-paragraph-ready") || 
-            block.closest(".ai-btn-group") || 
-            (block.tagName !== 'PRE' && block.textContent.trim().length < CONFIG.minTextLength)) return;
-        
+        if (block.querySelector(".ai-btn-group")) {
+            checkAndRestoreMark(block);
+            return; 
+        }
+        if (block.classList.contains("ai-paragraph-ready") || block.closest(".ai-btn-group") || (block.tagName !== 'PRE' && block.textContent.trim().length < CONFIG.minTextLength)) return;
         if (block.closest("pre") && block.tagName !== "PRE") return;
         if (block.isContentEditable || block.closest('[contenteditable="true"]')) return;
-
-        // ★ 修复：嵌套检测。如果当前是 li/blockquote 且内部有 p，则不在当前层注入，留给内部 p 注入
-        if ((block.tagName === 'LI' || block.tagName === 'BLOCKQUOTE' || block.tagName === 'DD') && block.querySelector('p')) {
-             return;
-        }
 
         block.classList.add("ai-paragraph-ready");
         const group = document.createElement("div");
         group.className = "ai-btn-group";
-        
+
         const copyBtn = createBtn(ICONS.copy, "复制", () => {
           const text = getCleanText(block);
-          executeCopy(text, block, "格式化复制成功");
+          executeCopy(text, block, "复制成功");
         });
+        const markBtn = createBtn(ICONS.mark, "标记/取消", () => handleMark(block));
         const deleteBtn = createBtn(ICONS.delete, "隐藏", () => hideBlock(block));
         deleteBtn.classList.add("btn-delete");
 
         group.appendChild(copyBtn);
+        group.appendChild(markBtn);
         group.appendChild(deleteBtn);
         block.appendChild(group);
+
+        checkAndRestoreMark(block);
       });
 
-      // 2. 图片注入
       const images = container.querySelectorAll("img");
       images.forEach(img => {
         if (img.width < 100 || img.height < 100) return;
-        
         const wrapper = img.parentElement;
-        if (!wrapper || wrapper.classList.contains("ai-image-ready")) return;
+        if (!wrapper || wrapper.classList.contains("ai-image-ready") || wrapper.querySelector(".ai-btn-group")) {
+             if (wrapper) checkAndRestoreMark(wrapper);
+             return;
+        }
 
         wrapper.classList.add("ai-image-ready");
         const style = window.getComputedStyle(wrapper);
@@ -659,22 +927,24 @@ ob.observe(document.body, { childList: true, subtree: true });
 
         const group = document.createElement("div");
         group.className = "ai-btn-group ai-img-btn-group";
-        
+
         const copyImgBtn = createBtn(ICONS.image, "复制图片", () => executeImageCopy(img));
+        const markImgBtn = createBtn(ICONS.mark, "标记/取消", () => handleMark(wrapper));
         const hideImgBtn = createBtn(ICONS.delete, "隐藏", () => hideBlock(wrapper));
         hideImgBtn.classList.add("btn-delete");
 
         group.appendChild(copyImgBtn);
+        group.appendChild(markImgBtn);
         group.appendChild(hideImgBtn);
         wrapper.appendChild(group);
+
+        checkAndRestoreMark(wrapper);
       });
 
-      // 3. 标题注入
       const headers = container.querySelectorAll("h1, h2, h3, h4");
       headers.forEach(header => {
-        if (header.dataset.aiReady) return;
+        if (header.dataset.aiReady || header.querySelector(".ai-section-copy-btn")) return;
         if (header.isContentEditable || header.closest('[contenteditable="true"]')) return;
-
         header.dataset.aiReady = "true";
         header.addEventListener("click", (e) => {
           if (e.target.closest(".ai-section-copy-btn")) return;
@@ -685,15 +955,53 @@ ob.observe(document.body, { childList: true, subtree: true });
         header.appendChild(secCopyBtn);
       });
     });
+
+    const jumpContainer = document.querySelector(".ai-jump-container");
+    if (jumpContainer) ensureBottomButton(jumpContainer);
   }
 
   document.addEventListener("pointerdown", handleMathClick, true);
 
+  document.addEventListener("click", (e) => {
+    if (!e.altKey || e.button !== 0) return;
+    if (e.target.closest(".ai-icon-btn") || e.target.closest("button") || e.target.closest("a")) return;
+    const target = e.target.closest("p, li, dd, h1, h2, h3, h4, h5, h6, pre, blockquote, .math-block, table");
+    if (target) {
+      e.preventDefault(); e.stopPropagation();
+      const text = getCleanText(target);
+      if (text && text.length > 0) executeCopy(text, target, "快捷键复制成功");
+    }
+  }, true); 
+
   let debounceTimer;
+  let currentUrl = location.href; 
   const observer = new MutationObserver(() => {
     clearTimeout(debounceTimer);
+    if (location.href !== currentUrl) {
+        currentUrl = location.href;
+        markedElements = []; 
+        const container = document.querySelector(".ai-jump-container");
+        if(container) { 
+            Array.from(container.children).forEach(child => {
+                if (child.id !== "jump-btn-bottom") child.remove();
+            });
+        }
+    }
     debounceTimer = setTimeout(injectTools, 300);
   });
   observer.observe(document.body, { childList: true, subtree: true });
   injectTools();
+  setTimeout(() => getJumpContainer(), 500);
+})();
+
+})();
+
+
+// === 🛡️ 插件3 JS (Scope Isolated) ===
+(() => {
+(function() {
+    'use strict';
+    console.log("Gemini Stream Only Width (90%) Loaded.");
+})();
+
 })();
